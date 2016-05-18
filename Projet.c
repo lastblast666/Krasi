@@ -1,7 +1,9 @@
-//#include <utility.h>
+#include <utility.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+/************************************************************************************/
 
 typedef struct T_domino T_domino;
 struct T_domino
@@ -10,12 +12,12 @@ struct T_domino
   int dispo;
 };
 
-//May be useful
+//Peut-etre Utile
 typedef int bool;
 #define true 1
 #define false 0
 
-/* Defining type for game board/player */
+/* Definir le type du jeu */
 typedef struct T_jeu T_jeu;
 struct T_jeu
 {
@@ -23,7 +25,9 @@ struct T_jeu
   T_domino *allTiles;
 };
 
-/*Type for tiles */
+/************************************************************************************/
+
+/*Type pour domino */
 T_domino newT_domino(int _val1, int _val2)
 {
   T_domino tile;
@@ -34,7 +38,9 @@ T_domino newT_domino(int _val1, int _val2)
   return tile;
 }
 
-/* Siple function generating tiles */
+/************************************************************************************/
+
+/* Fonction pour generer des dominos */
 T_domino* generateDominos(const int nbTiles)
 {
   T_domino *tiles = malloc(nbTiles * sizeof(T_domino));
@@ -51,13 +57,17 @@ T_domino* generateDominos(const int nbTiles)
   return tiles;
 }
 
-/* Printing function */
+/************************************************************************************/
+
+/* Fonction Affichage */
 void printDomino(T_domino tile)
 {
   printf(" _\n|\033[4m%d\033[24m|\n|\033[4m%d\033[24m|\n", tile.val1, tile.val2);
 }
 
-/* Simple function to copy a tiles array */
+/************************************************************************************/
+
+/* Fonction pour copier des dominos */
 T_domino* arrayCopy(T_domino* baseArray, int len, int newDispo)
 {
   T_domino *copy = malloc(len * sizeof(T_domino));
@@ -70,7 +80,9 @@ T_domino* arrayCopy(T_domino* baseArray, int len, int newDispo)
   return copy;
 }
 
-/* Function that print available tiles for player or board */
+/************************************************************************************/
+
+/* Fonction montrant les dominos disponibles au joueurs */
 void printAvailableTiles(T_domino* tiles, int len)
 {
   for (int i = 0; i < len; i++)
@@ -80,7 +92,9 @@ void printAvailableTiles(T_domino* tiles, int len)
   }
 }
 
-/* Function to check if the tile is available */
+/************************************************************************************/
+
+/* Fonction qui vérifie que le domino est disponible */
 bool arrayContains(int* array, int value, int len)
 {
   int i = 0;
@@ -97,7 +111,9 @@ bool arrayContains(int* array, int value, int len)
   return contains;
 }
 
-/* Creating a random array of size arg(size) and within range arg(range) */
+/************************************************************************************/
+
+/* Creation d'un tableau de taille aléaoire arg(size) et within range arg(range) */
 int* randomNbArray(int size, int maxRange)
 {
   int *elements = malloc(sizeof(int)*size);
@@ -124,32 +140,38 @@ int* randomNbArray(int size, int maxRange)
   return elements;
 }
 
-/* Main menu for player p */
-void PrintMenu() //TODO : add args for current player
+/************************************************************************************/
+
+/* Menu Joueur */
+void PrintMenu() //TODO : Ajouter des caracteristiques pour chaque joueurs
 {
-  printf("Hello player !\n"
+  printf("\nHello player !\n\n"
           "What do you want to do?\n\n"
           "\t1.Place tile"
           "\t2.Exit\n\n > ");
+  
+  
 
   getchar();
 }
 
+/************************************************************************************/
+
 int main(int argc , char * argv[])
 {
-  /* Game variables */
+  /* Variable de Jeu */
   const int NB_DOM = 28;
   const int NB_INITIAL_DOM = 6;
   const int NB_JOUEURS = 1;
   T_domino *tilesList = generateDominos(NB_DOM);
-  /* Creating game board */
+  /* Creation du plateau de jeu */
   T_jeu board;
   board.nbTilesLeft = NB_DOM;
   board.allTiles = tilesList;
 
   T_jeu* players = malloc((NB_JOUEURS + 1) * sizeof(T_jeu));
 
-  /* Initializing rand function */
+  /* Initialisation de la fonction rand */
   srand((int)time(NULL));
 
   for (int i = 0; i <= NB_JOUEURS; i++)
@@ -164,14 +186,14 @@ int main(int argc , char * argv[])
     }
   }
 
-  /* Printing player available tiles */
+  /* Affichage des joueurs disponibles */
   for (int i = 0; i <= NB_JOUEURS; i++)
   {
     printf("Player %d :\n", i+1);
     printAvailableTiles(players[i].allTiles, NB_DOM);
   }
 
-  /* Printing menu */
+  /* Affichage menu */
   PrintMenu();
 
   /* REGION : Freeing memory */
